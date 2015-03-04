@@ -2,9 +2,9 @@
  * formatter.js - some utilites for producing color coded and other fancy output
  *                to the consele.
  *
- * Note that Formatter use's `chalk`'s support for auto-detecting whether or not
+ * Note that Formatter uses `chalk`'s support for auto-detecting whether or not
  * color is eanbled in the current terminal context.  You can override this logic
- * by adding the flag `--color` or `--no-color` to the command-line of the program ]\
+ * by adding the flag `--color` or `--no-color` to the command-line of the program
  * you are running.
  *
  */

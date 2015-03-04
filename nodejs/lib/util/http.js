@@ -36,7 +36,7 @@
  *
  * The `body` (when present) must contain a map with exactly one key--either
  * `json` or `form`.  The value of this key should be another map, contianing
- * the acutal name/value pairs to be included in the request body.
+ * the actual name/value pairs to be included in the request body.
  *
  * When the root key in `body` is `form`, the body content will be posted as
  * `application/x-www-form-urlencoded` data.  When the root key is `json`, the
@@ -52,22 +52,22 @@
  *
  * OTHER METHODS
  *
- *  - usAuthorization(token) - stores the given `token` for use in the
- *                             Authorization header, like this:
- *                                 Authorization: Bearer <ACCESS-TOKEN>
- *                             Set `token = null` to erase the current
- *                             access token (if any).
+ *  - useAuthorization(token) - stores the given `token` for use in the
+ *                              Authorization header, like this:
+ *                                  Authorization: Bearer <ACCESS-TOKEN>
+ *                              Set `token = null` to erase the current
+ *                              access token (if any).
  *
- *  - supportCookies(bool)   - when `true`, create a new (empty) "cookie jar" and
- *                             enabled cookie support. When `false`, disable
- *                             cookie support and delete the current cookie jar
- *                             (if any).
+ *  - supportCookies(bool)    - when `true`, create a new (empty) "cookie jar" and
+ *                              enabled cookie support. When `false`, disable
+ *                              cookie support and delete the current cookie jar
+ *                              (if any).
  * ATTRIBUTES
  *
  *  - urlBase - the URL to use when given a relative path.
  *
  *  - quiet   - by default, HTTP prints information about the request and response
- *              to the console. Setting `quiet = false` will suppress that.
+ *              to the console. Setting `quiet = true` will suppress that.
  *
  *------------------------------------------------------------------------------
  */
