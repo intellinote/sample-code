@@ -1,7 +1,7 @@
 /*
  * sequencer.js - a cleaner way to write deeply-nested callback methods.
  *
- * Node.js uses "callback methods" whenever an asychrnous service such as
+ * Node.js uses "callback methods" whenever an asychronous service such as
  * I/O is used.  This can lead to deeply nested and hard-to-read code
  * such as;
  *
