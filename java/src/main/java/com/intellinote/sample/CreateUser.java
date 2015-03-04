@@ -150,6 +150,7 @@ public class CreateUser {
 		     */
 		    String userId = null;
 		    String userRefreshToken = null;
+		    String userPassword = "DemoPasswd1234";
 		    
 		    // Creating the user is just a matter of POSTing certain attributes to the `/v2.0/user` API method.
 		    JsonObject user = new JsonObject();
@@ -182,6 +183,7 @@ public class CreateUser {
 				throw new RuntimeException("Create User Failed : Expected a refresh_token value here, but found: " + 
 						rootObj.toString());
 		    }
+		    System.out.println("Created user " + email + " with password " + userPassword);
 		    
 		    
 		    /** Obtain an access token for the user using the pre-authorized refresh token **/
@@ -258,8 +260,9 @@ public class CreateUser {
 		    System.out.println("Create a new org for that user.");
 		    String orgId = null;
 		    // Create the userPayload with Gson
+		    String orgName = email + "'s Demo Org";
 		    JsonObject org = new JsonObject();
-		    org.addProperty("name", email + "'s Demo Org");
+		    org.addProperty("name", orgName);
 		    
 		    HttpPost createOrgRequest = new HttpPost(server + baseUrl + "/v2.0/org");
 	        StringEntity createOrgParams = new StringEntity(org.toString());
@@ -278,6 +281,7 @@ public class CreateUser {
 				throw new RuntimeException("Create Org Failed : Expected a org_id value here, but found: " + 
 						rootObj.toString());
 		    }
+		    System.out.println("Created org " + orgName);
 		    
 		    
 			/** Fetch a list of orgs (should be non-empty) **/
@@ -348,11 +352,12 @@ public class CreateUser {
 		    String secondEmail = new Date().getTime() + "-" + Math.round(Math.random() * 10000) + "@example.org";
 		    String secondUserId = null;
 		    String secondUserRefreshToken = null;
+		    String secondUserPassword = "DemoPasswd2345";
 		    
 		    JsonObject secondUser = new JsonObject();
 		    secondUser.addProperty("given_name", "Demo2");
 		    secondUser.addProperty("family_name", "User2");
-		    secondUser.addProperty("password", "DemoPasswd2345");
+		    secondUser.addProperty("password", secondUserPassword);
 		    secondUser.addProperty("email", secondEmail);
 		    secondUser.addProperty("job_title", "Second User");
 		    
@@ -376,6 +381,7 @@ public class CreateUser {
 		    if (secondUserRefreshToken == null) {
 				throw new RuntimeException("Create Second User Failed : Response did not contain a refresh token");
 		    }
+		    System.out.println("Created user " + secondEmail + " with password " + secondUserPassword);
 		    
 
 		    /** Add the second user to the org **/
