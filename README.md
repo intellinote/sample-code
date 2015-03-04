@@ -1,4 +1,4 @@
-## Sample Code for Integerating with Intellinote
+## Sample Code for Integrating with Intellinote
 
 This repository provides examples of programs that integrate with the [Intellinote API](https://api.intellinote.net/).
 
