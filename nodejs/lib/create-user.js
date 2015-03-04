@@ -311,5 +311,71 @@ S.next(function(next){
   });
 });
 
+// Switching back to the app-level API key...
+S.next(function(next){ http.useAuthorization(accessToken); next(); });
+
+// Let us create a second user
+var secondEmail = Date.now() + "-" + Math.round(Math.random()*10000) + "@example.org";
+var secondUserId = null;
+var secondUserRefreshToken = null;
+
+S.next(function(next) {
+  console.log("Creating a second new user.");
+  var url = "/v2.0/user";
+  var payload = {
+    "given_name":"Demo2",
+    "family_name":"User2",
+    "password":'DemoPasswd2345',
+    "email":secondEmail,
+    "job_title":"Second User"
+  };
+  http.post(url,{json:payload},function(err,response,body){
+    /* test the response */
+    assert.ok( !err );
+    assert.ok( response.statusCode === 201 );
+    assert.ok(body && body.user_id,"Expected a user_id value here, but found:" +JSON.stringify(body));
+    assert.ok(body && body.refresh_token,"Expected a refresh_token value here, but found:" +JSON.stringify(body));
+    /* collect the data we'll need later */
+    secondUserId = body.user_id;
+    secondUserRefreshToken = body.refresh_token
+    /* move on */
+    next();
+  });
+});
+
+// Switching back to the org-admin API key...
+S.next(function(next){ http.useAuthorization(userAccessToken); next(); });
+
+// Add the user to the org
+S.next(function(next) {
+  console.log("Adding second user to org.");
+  var url = "/v2.0/org/"+orgId+"/member/"+ secondUserId
+  var payload = {
+    "access_type":"FULL"
+  };
+  http.post(url,{json:payload},function(err,response,body){
+    /* test the response */
+    assert.ok( !err );
+    assert.ok( response.statusCode === 201 );
+    /* move on */
+    next();
+  });
+});
+
+// Select a list of org members
+S.next(function(next) {
+  console.log("Selecting list of org members.");
+  var url = "/v2.0/org/"+orgId+"/members"
+  http.getJSON(url,function(err,response,body){
+    /* test the response */
+    assert.ok( !err );
+    assert.ok( response.statusCode === 200 );
+    assert.ok( Array.isArray(body) );
+    assert.ok( body.length === 2 );
+    /* move on */
+    next();
+  });
+});
+
 // Run it.
 S.run();
