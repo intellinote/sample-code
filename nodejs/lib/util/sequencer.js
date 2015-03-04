@@ -13,7 +13,7 @@
  *       })'
  *     });
  *
- * Sequencer gives us a way to "flatten out:" those nested calls.
+ * Sequencer gives us a way to "flatten out" those nested calls.
  *
  * It works like this:
  *
@@ -29,7 +29,7 @@
  *     });
  *     S.run();
  *
- * Calling `run` will inoke each of those methods in turn.
+ * Calling `run` will invoke each of those methods in turn.
  * You MUST ensure that `next()` is called after each
  * step in the process so that Sequencer knows to move on
  * to the next step.
