@@ -37,8 +37,8 @@ public class CreateUser {
 	public static void main(String[] args) {
 		String server =       "https://sandbox.intellinote.net";
 		String baseUrl =      "/api/rest";
-	    String clientId =     "p5eqWS1oF0n6COmn";
-	    String clientSecret = "CMe09Ge9F0n6F0Jh";
+	    String clientId =     "<CLIENT-ID>";
+	    String clientSecret = "<CLIENT-SECRET>";
 	    
 	    String accessToken = null;	    
 	    String refreshToken = null;
