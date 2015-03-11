@@ -1,4 +1,4 @@
-package com.intellinote.sample;
+package net.intellinote.sample;
 
 import java.io.InputStreamReader;
 import java.security.cert.CertificateException;
@@ -25,7 +25,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /*
- * If you would like to just run this without using the Maven build just add 
+ * If you would like to just run this without using the Maven build just add
  * the following jars to your classpath:
  * 	httpclient-4.1.1.jar (Apache's Http Client)
  * 	httpcore-4.1.jar (dependency of httpclient)
@@ -39,31 +39,31 @@ public class CreateUser {
 		String baseUrl =      "/api/rest";
 	    String clientId =     "<CLIENT-ID>";
 	    String clientSecret = "<CLIENT-SECRET>";
-	    
-	    String accessToken = null;	    
+
+	    String accessToken = null;
 	    String refreshToken = null;
-	    
+
 	    // Setup the Gson parser
 	    JsonParser jp = new JsonParser();
-	    
+
 	    /*
-	     * Use the wrapped httpClient if you don't want to go through the 
-	     * trouble of importing the server's SSL certificate into your 
+	     * Use the wrapped httpClient if you don't want to go through the
+	     * trouble of importing the server's SSL certificate into your
 	     * keystore.  A good description of how this is accomplished can be
-	     * found here: 
+	     * found here:
 	     *   http://javaskeleton.blogspot.com/2010/07/avoiding-peer-not-authenticated-with.html
-	     *   
+	     *
 	     * If you would like to know how to import the server's SSL certificate
-	     * into your keystore please see: 
+	     * into your keystore please see:
 	     *   http://blog.nerdability.com/2013/01/tech-how-to-fix-sslpeerunverifiedexcept.html
-	     *   
-	     *  Once you have followed the steps to import the SSL certificate from 
-	     *  sandbox.intellinote.net into your keystore you can comment out the 
+	     *
+	     *  Once you have followed the steps to import the SSL certificate from
+	     *  sandbox.intellinote.net into your keystore you can comment out the
 	     *  line using the wrapped httpClient and uncomment the line below it.
 	     */
-	    HttpClient httpClient = CreateUser.wrapClient(new DefaultHttpClient()); // Bypass the keystore 
+	    HttpClient httpClient = CreateUser.wrapClient(new DefaultHttpClient()); // Bypass the keystore
 //	    HttpClient httpClient = new DefaultHttpClient(); // Use the keystore
-	    
+
 	    try {
 	    	/** Log in via client_credentials grant to obtain the access and refresh tokens. **/
 
@@ -89,7 +89,7 @@ public class CreateUser {
 		    payload.addProperty("client_id", clientId);
 		    payload.addProperty("client_secret", clientSecret);
 		    payload.addProperty("grant_type", "client_credentials");
-		    
+
 	        HttpPost accessRequest = new HttpPost(server + baseUrl + "/auth/oauth2/access");
 	        StringEntity accessParams = new StringEntity(payload.toString());
 	        accessRequest.addHeader("content-type", "application/json");
@@ -99,22 +99,22 @@ public class CreateUser {
 				throw new RuntimeException("Access Request Failed : HTTP error code : "
 				   + accessResponse.getStatusLine().getStatusCode());
 			}
-		    
+
 		    // Convert to a JSON object to access data using Gson
 		    JsonElement root = jp.parse(new InputStreamReader((accessResponse.getEntity().getContent())));
-		    JsonObject rootObj = root.getAsJsonObject(); 
+		    JsonObject rootObj = root.getAsJsonObject();
 		    accessToken = rootObj.get("access_token").getAsString();
 		    refreshToken = rootObj.get("refresh_token").getAsString();
 		    if (accessToken == null) {
-				throw new RuntimeException("Access Request Failed : Expected an access_token value here, but found: " + 
+				throw new RuntimeException("Access Request Failed : Expected an access_token value here, but found: " +
 						rootObj.toString());
 		    }
 		    if (refreshToken == null) {
-				throw new RuntimeException("Access Request Failed : Expected a refresh_token value here, but found: " + 
+				throw new RuntimeException("Access Request Failed : Expected a refresh_token value here, but found: " +
 						rootObj.toString());
 		    }
-		    
-		    
+
+
 		    /** Test that the access token works **/
 
 		    System.out.println("Confirming our access works by hitting /v2.0/ping/authed.");
@@ -126,14 +126,14 @@ public class CreateUser {
 				   + testAccessResponse.getStatusLine().getStatusCode());
 			}
 		    root = jp.parse(new InputStreamReader((testAccessResponse.getEntity().getContent())));
-		    rootObj = root.getAsJsonObject(); 
+		    rootObj = root.getAsJsonObject();
 		    String accessTimestamp = rootObj.get("timestamp").getAsString();
 		    if (accessTimestamp == null) {
-				throw new RuntimeException("Test Access Request Failed : Expected a timestamp value here, but found: " + 
+				throw new RuntimeException("Test Access Request Failed : Expected a timestamp value here, but found: " +
 						rootObj.toString());
 		    }
-		    
-		    
+
+
 		    /** Create a new user **/
 
 		    System.out.println("Creating a new user.");
@@ -151,7 +151,7 @@ public class CreateUser {
 		    String userId = null;
 		    String userRefreshToken = null;
 		    String userPassword = "DemoPasswd1234";
-		    
+
 		    // Creating the user is just a matter of POSTing certain attributes to the `/v2.0/user` API method.
 		    JsonObject user = new JsonObject();
 	        user.addProperty("given_name", "Demo");
@@ -160,7 +160,7 @@ public class CreateUser {
 	        user.addProperty("email", email);
 	        user.addProperty("job_title", "Product Demonstrator");
 		    user.addProperty("tel_work", "(212) 853-5987");
-		    
+
 	        HttpPost createUserRequest = new HttpPost(server + baseUrl + "/v2.0/user");
 	        StringEntity createUserParams = new StringEntity(user.toString());
 	        createUserRequest.addHeader("Authorization", "Bearer " + accessToken);
@@ -172,20 +172,20 @@ public class CreateUser {
 				   + createUserResponse.getStatusLine().getStatusCode());
 			}
 		    root = jp.parse(new InputStreamReader((createUserResponse.getEntity().getContent())));
-		    rootObj = root.getAsJsonObject(); 
+		    rootObj = root.getAsJsonObject();
 		    userId = rootObj.get("user_id").getAsString();
 		    userRefreshToken = rootObj.get("refresh_token").getAsString();
 		    if (userId == null) {
-				throw new RuntimeException("Create User Failed : Expected a user_id value here, but found: " + 
+				throw new RuntimeException("Create User Failed : Expected a user_id value here, but found: " +
 						rootObj.toString());
 		    }
 		    if (userRefreshToken == null) {
-				throw new RuntimeException("Create User Failed : Expected a refresh_token value here, but found: " + 
+				throw new RuntimeException("Create User Failed : Expected a refresh_token value here, but found: " +
 						rootObj.toString());
 		    }
 		    System.out.println("Created user " + email + " with password " + userPassword);
-		    
-		    
+
+
 		    /** Obtain an access token for the user using the pre-authorized refresh token **/
 
 		    System.out.println("Obtaining an access token for that new user.");
@@ -197,7 +197,7 @@ public class CreateUser {
 		    userPayload.addProperty("client_secret", clientSecret);
 		    userPayload.addProperty("grant_type", "refresh_token");
 		    userPayload.addProperty("refresh_token", userRefreshToken);
-		    
+
 		    HttpPost userAcessRequest = new HttpPost(server + baseUrl + "/auth/oauth2/access");
 	        StringEntity userAcessParams = new StringEntity(userPayload.toString());
 	        userAcessRequest.addHeader("Authorization", "Bearer " + accessToken);
@@ -209,14 +209,14 @@ public class CreateUser {
 				   + userAcessResponse.getStatusLine().getStatusCode());
 			}
 		    root = jp.parse(new InputStreamReader((userAcessResponse.getEntity().getContent())));
-		    rootObj = root.getAsJsonObject(); 
+		    rootObj = root.getAsJsonObject();
 		    userAccessToken = rootObj.get("access_token").getAsString();
 		    if (userAccessToken == null) {
-				throw new RuntimeException("Get User Access Failed : Expected an access_token value here, but found: " + 
+				throw new RuntimeException("Get User Access Failed : Expected an access_token value here, but found: " +
 						rootObj.toString());
 		    }
-		    
-		    
+
+
 		    /** Hit a test method to demonstrate that the user access token works **/
 
 		    System.out.println("Confirming our user-level access works by hitting /v2.0/ping/authed.");
@@ -228,14 +228,14 @@ public class CreateUser {
 				   + testUserAccessResponse.getStatusLine().getStatusCode());
 			}
 		    root = jp.parse(new InputStreamReader((testUserAccessResponse.getEntity().getContent())));
-		    rootObj = root.getAsJsonObject(); 
+		    rootObj = root.getAsJsonObject();
 		    String userAccessTimestamp = rootObj.get("timestamp").getAsString();
 		    if (userAccessTimestamp == null) {
-				throw new RuntimeException("Test User Access Failed : Expected a timestamp value here, but found: " + 
+				throw new RuntimeException("Test User Access Failed : Expected a timestamp value here, but found: " +
 						rootObj.toString());
 		    }
-		    
-		    
+
+
 			/** Fetch a list of orgs (should be empty) **/
 
 		    System.out.println("Get a list of the orgs the user has access to (should be empty).");
@@ -249,12 +249,12 @@ public class CreateUser {
 		    root = jp.parse(new InputStreamReader((orgsResponse.getEntity().getContent())));
 		    if (!root.isJsonArray()) {
 		    	throw new RuntimeException("Orgs Request Failed : Response was not an array");
-		    } 
+		    }
 		    if (root.getAsJsonArray().size() != 0) {
 		    	throw new RuntimeException("Orgs Request Failed : Response was not an empty array");
 		    }
-		    
-		    
+
+
 			/** Create a new org for that user **/
 
 		    System.out.println("Create a new org for that user.");
@@ -263,7 +263,7 @@ public class CreateUser {
 		    String orgName = email + "'s Demo Org";
 		    JsonObject org = new JsonObject();
 		    org.addProperty("name", orgName);
-		    
+
 		    HttpPost createOrgRequest = new HttpPost(server + baseUrl + "/v2.0/org");
 	        StringEntity createOrgParams = new StringEntity(org.toString());
 	        createOrgRequest.addHeader("Authorization", "Bearer " + userAccessToken);
@@ -275,15 +275,15 @@ public class CreateUser {
 				   + createOrgResponse.getStatusLine().getStatusCode());
 			}
 		    root = jp.parse(new InputStreamReader((createOrgResponse.getEntity().getContent())));
-		    rootObj = root.getAsJsonObject(); 
+		    rootObj = root.getAsJsonObject();
 		    orgId = rootObj.get("org_id").getAsString();
 		    if (orgId == null) {
-				throw new RuntimeException("Create Org Failed : Expected a org_id value here, but found: " + 
+				throw new RuntimeException("Create Org Failed : Expected a org_id value here, but found: " +
 						rootObj.toString());
 		    }
 		    System.out.println("Created org " + orgName);
-		    
-		    
+
+
 			/** Fetch a list of orgs (should be non-empty) **/
 
 		    System.out.println("List the orgs again (should be non-empty).");
@@ -297,12 +297,12 @@ public class CreateUser {
 		    root = jp.parse(new InputStreamReader((orgsNonEmptyResponse.getEntity().getContent())));
 		    if (!root.isJsonArray()) {
 		    	throw new RuntimeException("Orgs Non-Empty Request Failed : Response was not an array");
-		    } 
+		    }
 		    if (root.getAsJsonArray().size() == 0) {
 		    	throw new RuntimeException("Orgs Non-Empty Request Failed : Response was an empty array, but 1 org should be present");
 		    }
-		    
-		    
+
+
 			/** Fetch a list of workspaces **/
 
 		    System.out.println("List the workspaces in that org.");
@@ -317,16 +317,16 @@ public class CreateUser {
 		    root = jp.parse(new InputStreamReader((workspaceResponse.getEntity().getContent())));
 		    if (!root.isJsonArray()) {
 		    	throw new RuntimeException("Workspace Request Failed : Response was not an array");
-		    } 
+		    }
 		    workspaceId = root.getAsJsonArray().get(0).getAsJsonObject().get("workspace_id").toString();
 		    if (workspaceId == null) {
-		    	throw new RuntimeException("Workspace Request Failed : Expected a workspace_id value here, but found: " + 
+		    	throw new RuntimeException("Workspace Request Failed : Expected a workspace_id value here, but found: " +
 		    			root.getAsJsonArray().get(0).toString());
 		    }
-		    
-		    
+
+
 			/** Fetch a list of notes **/
-		    
+
 		    System.out.println("List notes in that workspace.");
 		    HttpGet noteRequest = new HttpGet(server + baseUrl + "/v2.0/org/" + orgId + "/workspace/" + workspaceId + "/notes");
 		    noteRequest.setHeader("Authorization", "Bearer " + userAccessToken);
@@ -338,29 +338,29 @@ public class CreateUser {
 		    root = jp.parse(new InputStreamReader((noteResponse.getEntity().getContent())));
 		    if (!root.isJsonArray()) {
 		    	throw new RuntimeException("Note Request Failed : Response was not an array");
-		    } 
+		    }
 		    String noteId = root.getAsJsonArray().get(0).getAsJsonObject().get("note_id").toString();
 		    if (noteId == null) {
-		    	throw new RuntimeException("Note Request Failed : Expected a note_id value here, but found: " + 
+		    	throw new RuntimeException("Note Request Failed : Expected a note_id value here, but found: " +
 		    			root.getAsJsonArray().get(0).toString());
 		    }
-		    
-		    
+
+
 		    /** Let us create a second user **/
-		    
+
 		    System.out.println("Creating a second new user.");
 		    String secondEmail = new Date().getTime() + "-" + Math.round(Math.random() * 10000) + "@example.org";
 		    String secondUserId = null;
 		    String secondUserRefreshToken = null;
 		    String secondUserPassword = "DemoPasswd2345";
-		    
+
 		    JsonObject secondUser = new JsonObject();
 		    secondUser.addProperty("given_name", "Demo2");
 		    secondUser.addProperty("family_name", "User2");
 		    secondUser.addProperty("password", secondUserPassword);
 		    secondUser.addProperty("email", secondEmail);
 		    secondUser.addProperty("job_title", "Second User");
-		    
+
 	        HttpPost createSecondUserRequest = new HttpPost(server + baseUrl + "/v2.0/user");
 	        StringEntity createSecondUserParams = new StringEntity(secondUser.toString());
 	        createSecondUserRequest.addHeader("Authorization", "Bearer " + accessToken);
@@ -372,7 +372,7 @@ public class CreateUser {
 				   + createSecondUserResponse.getStatusLine().getStatusCode());
 			}
 		    root = jp.parse(new InputStreamReader((createSecondUserResponse.getEntity().getContent())));
-		    rootObj = root.getAsJsonObject(); 
+		    rootObj = root.getAsJsonObject();
 		    secondUserId = rootObj.get("user_id").getAsString();
 		    secondUserRefreshToken = rootObj.get("refresh_token").getAsString();
 		    if (secondUserId == null) {
@@ -382,15 +382,15 @@ public class CreateUser {
 				throw new RuntimeException("Create Second User Failed : Response did not contain a refresh token");
 		    }
 		    System.out.println("Created user " + secondEmail + " with password " + secondUserPassword);
-		    
+
 
 		    /** Add the second user to the org **/
-		    
+
 		    System.out.println("Adding second user to org.");
 		    // Create the userPayload with Gson
 		    JsonObject orgAccessLevel = new JsonObject();
 		    orgAccessLevel.addProperty("access_type", "FULL");
-		    
+
 		    HttpPost addUserToOrgRequest = new HttpPost(server + baseUrl + "/v2.0/org/" + orgId + "/member/" + secondUserId);
 	        StringEntity addUserToOrgParams = new StringEntity(orgAccessLevel.toString());
 	        addUserToOrgRequest.addHeader("Authorization", "Bearer " + userAccessToken);
@@ -401,10 +401,10 @@ public class CreateUser {
 				throw new RuntimeException("Add Second User To Org Failed : HTTP error code : "
 				   + addUserToOrgResponse.getStatusLine().getStatusCode());
 			}
-		    
+
 		    /*
-		     * The following line is there because you must consume the response 
-		     * body before you can reuse the connection in HttpClient for 
+		     * The following line is there because you must consume the response
+		     * body before you can reuse the connection in HttpClient for
 		     * another request.
 		     */
 		    root = jp.parse(new InputStreamReader((addUserToOrgResponse.getEntity().getContent())));
@@ -423,12 +423,12 @@ public class CreateUser {
 		    root = jp.parse(new InputStreamReader((membersResponse.getEntity().getContent())));
 		    if (!root.isJsonArray()) {
 		    	throw new RuntimeException("Members Request Failed : Response was not an array");
-		    } 
+		    }
 		    if (root.getAsJsonArray().size() != 2) {
-		    	throw new RuntimeException("Members Request Failed : Response should have contained 2 members but instead contained " + 
+		    	throw new RuntimeException("Members Request Failed : Response should have contained 2 members but instead contained " +
 		    			root.getAsJsonArray().size());
 		    }
-		    
+
 		    System.out.println("All Tests completed successfully!");
 	    }catch (Exception ex) {
 		    ex.printStackTrace();
@@ -436,7 +436,7 @@ public class CreateUser {
 	        httpClient.getConnectionManager().shutdown();
 	    }
 	}
-	
+
 	/*
 	 * This method is used to wrap the default HttpClient with an HttpClient
 	 * that accepts any SSL certificate.  For further information please see:
@@ -448,10 +448,10 @@ public class CreateUser {
 			X509TrustManager tm = new X509TrustManager() {
 				public void checkClientTrusted(X509Certificate[] xcs, String string) throws CertificateException {
 				}
-		 
+
 				public void checkServerTrusted(X509Certificate[] xcs, String string) throws CertificateException {
 				}
-		 
+
 				public X509Certificate[] getAcceptedIssuers() {
 					return null;
 				}

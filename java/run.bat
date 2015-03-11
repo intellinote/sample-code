@@ -7,4 +7,4 @@ set "COMMONS_CODEC_JAR=$CP_HOME\commons-codec\commons-codec\1.4\commons-codec-1.
 set "SAMPLE_CODE_JAR=target\sample-code-1.0.jar"
 set "CP_JARS=%HTTPCLIENT_JAR%:%HTTPCORE_JAR%:%GSON_JAR%:%COMMONS_LOGGING_JAR%:%COMMONS_CODEC_JAR%:%SAMPLE_CODE_JAR%"
 
-java -cp %CP_JARS% com.intellinote.sample.CreateUser
+java -cp %CP_JARS% net.intellinote.sample.CreateUser

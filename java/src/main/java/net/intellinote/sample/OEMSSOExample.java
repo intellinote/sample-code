@@ -1,4 +1,4 @@
-package com.intellinote.sample;
+package net.intellinote.sample;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
