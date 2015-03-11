@@ -1,4 +1,4 @@
-Current examples:
+This directory contains Java-based examples of using the Intellinote APIs.
 
 **CreateUser.java** (`src/main/java/net/intellinote/sample/CreateUser.java`)
 
@@ -20,7 +20,7 @@ Demonstrates:
 5. acting as that user to add other users to the shared organization and workspace
 6. using the HMAC-based Single-Sign-On protocol to generate a link that authenticates as one of those users and launches the Intellinote widget directly into that shared workspace.
 
-To run these examples you can do one of the following:
+**To run these examples** you can do one of the following:
 
 * Build the examples with Maven using the provided `pom.xml` file
 	1. `mvn package`
