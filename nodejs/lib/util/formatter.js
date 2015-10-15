@@ -1,6 +1,6 @@
 /*
  * formatter.js - some utilites for producing color coded and other fancy output
- *                to the consele.
+ *                to the console.
  *
  * Note that Formatter uses `chalk`'s support for auto-detecting whether or not
  * color is eanbled in the current terminal context.  You can override this logic
