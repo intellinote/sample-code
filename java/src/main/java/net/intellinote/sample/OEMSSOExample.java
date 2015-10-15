@@ -36,7 +36,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 public class OEMSSOExample {
-
+  
+  /** The `main` method, which runs when the class is invoked from the command-line. */
   public static void main(String[] args) throws ClientProtocolException, IOException {
     String[] pair = RESTClient.execute();
     String email = pair[0];
@@ -48,15 +49,38 @@ public class OEMSSOExample {
 
 }
 
+/** 
+ * A utility class to encapsulates the logic needed to interact with the 
+ * Intellionte REST API.
+ */
 class RESTClient {
-  static String     restServer       = "https://sandbox.intellinote.net";
-  static String     restBasePath     = "/api/rest";
+  /** OAuth2 client_id value, which must be changed the value assigned to your application. */
   static String     restClientId     = "CLIENT-ID-GOES-HERE";  // TODO change this value
+  /** OAuth2 client_secret value, which must be changed the value assigned to your application. */
   static String     restClientSecret = "CLIENT-SECRET-GOES-HERE"; // TODO change this value
-  static String     workspaceId      = null;
+  /** protocol, host and optional port of the REST API service. */
+  static String     restServer       = "https://api.intellinote.net";
+  /** base path that prefixes all the API calls */
+  static String     restBasePath     = "/rest";
+  /** Container for the ID of the workspace we will generate below. */
+  static String     workspaceId      = null; // unused?
+  /** A utility class for parsing JSON. */
   static JsonParser jp               = new JsonParser();
+  /** A utility class for submitting HTTP(S) requests.. */
   static HttpClient httpClient       = RESTClient.wrapClient(new DefaultHttpClient());
 
+  /**
+   * Performs the following actions:
+   * 
+   *  1. Performs application-level authentication.
+   *  2. Uses those authentication credentials to create two new Intellinote users.
+   *  3. Peforms user-level authentication (to act as one of those users).
+   *  4. Acting as that user, creates a new Intellinote Organization and Workspace.
+   *  5. Still acting as that user, invites the second user to that Organization and Workspace.
+   * 
+   * Returns the email address (username) of the second user and the ID of the workspace the
+   * user was added to (for use in constructing an SSO URL).
+   */
   public static String[] execute() throws ClientProtocolException, IOException {
     String appAccessToken = RESTClient.loginAsApp();
     String user1email = "sso-test-" + new Date().getTime() % 10000 + "-" + Math.round(Math.random() * 10000) + "@example.org";
@@ -74,6 +98,7 @@ class RESTClient {
     return result;
   }
 
+  /** Performs userless-authentication to obtain an OAuth2 access token. */
   public static String loginAsApp() throws ClientProtocolException, IOException {
     /*********************************************************************************/
     System.out.println("Logging-in for userless, application-level API access.");
@@ -106,6 +131,11 @@ class RESTClient {
     return accessToken;
   }
 
+  /** 
+   * Uses the REST API to create a new Intellinote user. 
+   * Returns the user ID (email address) and an OAuth2 refresh token that can be used
+   * to access the Intellinote REST API on behalf of that user.
+   */
   public static String[] createUser(String email, String fname, String lname, String passwd, String accessToken) throws ClientProtocolException, IOException {
     /*********************************************************************************/
     System.out.println("Creating user " + email + ".");
@@ -149,6 +179,9 @@ class RESTClient {
     return result;
   }
 
+  /** 
+   * Exchanges an OAuth2 refresh token for an access token.
+   */
   public static String getAccessTokenForRefreshToken(String refreshToken) throws ClientProtocolException, IOException {
     /*********************************************************************************/
     System.out.println("Refreshing access token using refresh token value " + refreshToken + ".");
@@ -182,6 +215,7 @@ class RESTClient {
     return accessToken;
   }
 
+  /** Uses the REST API to create a new Intellinote organization. */
   public static String createOrg(String name, String accessToken) throws ClientProtocolException, IOException {
     /*********************************************************************************/
     System.out.println("Creating org " + name + ".");
@@ -213,6 +247,7 @@ class RESTClient {
     return orgId;
   }
 
+  /** Uses the REST API to create a new Intellinote workspace in the specified org. */
   public static String createWorkspace(String name, String orgId, String accessToken) throws ClientProtocolException, IOException {
     /*********************************************************************************/
     System.out.println("Creating workspace " + name + " in org " + orgId + ".");
@@ -246,6 +281,7 @@ class RESTClient {
     return workspaceId;
   }
 
+  /** Uses the REST API to add a user to an organization. */
   public static void addUserToOrg(String orgId, String userId, String role, String accessToken) throws ClientProtocolException, IOException {
     /*********************************************************************************/
     System.out.println("Adding user " + userId + " to org " + orgId + ".");
@@ -269,6 +305,7 @@ class RESTClient {
     /*********************************************************************************/
   }
 
+  /** Uses the REST API to add a user to a workspace. */
   public static void addUserToWorkspace(String orgId, String workspaceId, String userId, String role, String accessToken) throws ClientProtocolException, IOException {
     /*********************************************************************************/
     System.out.println("Adding user " + userId + " to workspace " + workspaceId + ".");
@@ -292,6 +329,11 @@ class RESTClient {
     /*********************************************************************************/
   }
 
+  /** 
+   * Utility method that wraps an HttpClient to support 
+   * SSL-certificate authorities not included with Java
+   * by default.
+   */
   public static HttpClient wrapClient(HttpClient base) {
     try {
       SSLContext ctx = SSLContext.getInstance("TLS");
@@ -321,7 +363,7 @@ class RESTClient {
 
 }
 
-/** This class generates a signed HMAC-SSO authentication request based. */
+/** This class generates a signed HMAC-SSO authentication request. */
 class SSOURLGenerator {
   static String  ssoClientId     = "SSO-CLIENT-ID-GOES-HERE"; // TODO: change this value
   static String  ssoSharedSecret = "SSO-SHARED-SECRET-GOES-HERE"; // TODO: change this value
