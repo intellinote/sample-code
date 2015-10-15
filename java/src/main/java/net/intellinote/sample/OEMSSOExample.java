@@ -35,9 +35,9 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+/** Contains the `main` method, which runs when this class is invoked from the command-line. */
 public class OEMSSOExample {
   
-  /** The `main` method, which runs when the class is invoked from the command-line. */
   public static void main(String[] args) throws ClientProtocolException, IOException {
     String[] pair = RESTClient.execute();
     String email = pair[0];
@@ -50,7 +50,7 @@ public class OEMSSOExample {
 }
 
 /** 
- * A utility class to encapsulates the logic needed to interact with the 
+ * A utility class that encapsulates the logic needed to interact with the 
  * Intellionte REST API.
  */
 class RESTClient {
