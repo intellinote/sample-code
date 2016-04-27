@@ -305,7 +305,7 @@ S.next(function(next){
     assert.ok( !err );
     assert.ok( response.statusCode === 200 );
     assert.ok( Array.isArray(body) );
-    assert.ok(body[0].note_id,"Expected a note_id value here, but found:" +JSON.stringify(body));
+    assert.ok( body.length === 0 );
     /* move on */
     next();
   });
