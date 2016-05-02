@@ -55,9 +55,10 @@ var assert = require('assert');
  * This script makes use of the `config.json` file found in the parent directory.
  */
 var config = require("../config.json");
-var server  = config.server.scheme + config.server.host;
+var server  = config.server.scheme + config.server.host + ":" + config.server.port;
 var baseURL = config.server.base;
 var http = new HTTP(server+baseURL);
+F.p("http baseURL is "+server+baseURL);
 
 var CLIENT_ID = config.oauth.client_id,
     CLIENT_SECRET = config.oauth.client_secret,
