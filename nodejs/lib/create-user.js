@@ -46,6 +46,7 @@
 // IMPORTS
 
 var HTTP = require("./util/http.js");
+var F = require("./util/formatter.js");
 var Sequencer = require("./util/sequencer.js");
 var assert = require('assert');
 
