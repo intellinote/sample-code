@@ -32,4 +32,4 @@ For more information about Intellinote, visit
 
 ---
 
-Intellinote is proud to join the [<img style="height:30px;vertical-align:top" src="https://app.intellinote.net/rest/img/broadsoft-2000x430.png">](http://www.broadsoft.com/) family. [Learn more...](http://www.broadsoft.com/news/press-releases/broadsoft_acquires_intellinote).
+Intellinote is proud to join the [<img style="height:30px;vertical-align:top" src="https://app.intellinote.net/rest/img/broadsoft-2000x430.png" height="30">](http://www.broadsoft.com/) family. [Learn more...](http://www.broadsoft.com/news/press-releases/broadsoft_acquires_intellinote).
