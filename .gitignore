@@ -1,9 +1,9 @@
 nodejs/config.json
 nodejs/node_modules
-/bin/
+bin
 .classpath
 .project
 java/.classpath
-java/.gitignore
 java/.project
 java/.settings
+java/target
