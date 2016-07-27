@@ -948,7 +948,7 @@ function readConfig () {
     console.error("          " + configFile);
     console.error("       Please set up a configuration file before continuing.");
     console.error("");
-    console.error("       See config.json-example for guidance.");
+    console.error("       See config.json.template for guidance.");
     process.exit(2);
   } else {
     try {
@@ -961,6 +961,8 @@ function readConfig () {
       console.error("       Please address the issue before continuing.");
       console.error("");
       console.error("       Note that the configuration MUST be a valid JSON document.");
+      console.error("");
+      console.error("       See config.json.template for guidance.");
       process.exit(3);
     }
   }
