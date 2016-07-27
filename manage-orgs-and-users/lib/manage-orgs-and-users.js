@@ -226,7 +226,7 @@ function main () {
   // ...and create it via the API:
 
   S.then(function(next) {
-    console.log("\nCreating org (while acting as admin user...");
+    console.log("\nCreating org (while acting as admin user)...");
     createOrg( accessToken, org.name, adminUser.user_id, function (err, response) {
       exitIfError(err);
       console.log("...createOrg returned\n" + JSON.stringify(response,null,2));
@@ -1098,7 +1098,7 @@ Creating admin user aadmin-69698513@example.com...
   "refresh_token": "REDACTED"
 }
 
-Creating org (while acting as admin user...
+Creating org (while acting as admin user)...
 ...createOrg returned
 {
   "org_id": 25817
