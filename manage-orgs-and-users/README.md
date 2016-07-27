@@ -9,7 +9,7 @@ This directory contains a simple JavaScript program that demonstrates how to cre
 
 ## Generating Documentation
 
-1. Run `npm run docs`.
+1. Run `npm run doc`.
 2. Open `docs/manage-orgs-and-users.html` in your web browser.
 
 ## Running
