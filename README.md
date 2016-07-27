@@ -2,8 +2,6 @@
 
 This repository provides examples of programs that integrate with the [Intellinote API](https://api.intellinote.net/).
 
-See the [`java`](./java) and [`nodejs`](./nodejs) directories for language-specific examples.
-
 Also see the [examples page on the Intellinote Developer's Portal](https://api.intellinote.net/rest/content/examples) for additional examples, or the [interactive API reference](https://api.intellinote.net/rest/api/v2.0) for more information.
 
 ## Licensing
@@ -32,10 +30,6 @@ control, visibility and security.
 For more information about Intellinote, visit
 <https://www.intellinote.net/>.
 
-### Work with Us
-
-Interested in working for Intellinote?  Visit
-[the careers section of our website](https://www.intellinote.net/careers/)
-to see our latest technical (and non-technical) openings.
-
 ---
+
+Intellinote is proud to join the [<img style="height:30px;vertical-align:top" src="https://app.intellinote.net/rest/img/broadsoft-2000x430.png">](http://www.broadsoft.com/) family. [Learn more...](http://www.broadsoft.com/news/press-releases/broadsoft_acquires_intellinote).
